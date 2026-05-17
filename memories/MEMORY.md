@@ -2,7 +2,7 @@ User: quant dev + system architect. Deep ONEBOT knowledge. Hates hand-holding. V
 §
 User tests with "有没有吹牛逼" — demands actual output as proof, not claims. Expects multiple independent verification rounds before accepting results. Session 5/17: unified_range backtest claims challenged and verified with live terminal output.
 §
-"能不能" ≠ 执行许可。用户问可行性时只回答可行性+方案，等明确指令再开工。今天犯了一次：用户问"能不能做成模型"，我直接改了 foundation.py 加 190 行 TechnicalIndicatorModel。用户当场纠正。以后"能不能"类问题必须等"去做"才动手。
+"能不能" ≠ 执行许可。用户问可行性时只回答可行性+方案，等明确指令（"去做"/"开干"）再动手。今天犯了一次：用户问"能不能做成模型"，我直接改了 foundation.py 加 190 行 TechnicalIndicatorModel。用户当场纠正。以后"能不能"类问题必须等"去做"才动手。
 §
 Minervini: RS≥70, VCP≥60, long-only. Leveraged ETF special handling (skip VCP, 10% stop, 10d pivot, pos halved). portfolio_opt range fix: VaR95 (3.2%). Consult DeepSeek before param changes.
 §
@@ -12,4 +12,4 @@ User expects '固化到skill' after any significant code change — means update
 §
 ONEBOT 3.0 code location: /home/ubuntu/.hermes/skills/onebot-3.0/ — NOT /home/ubuntu/onebot. User confirmed only this directory should exist; all others (.onebot, onebot-wiki, onebot_constitution) were deleted. User expects me to verify paths with terminal before claiming existence.
 §
-unified_range 优化完成：去掉 TTL + warmup() + 统计回退（2.80%*vol系数）。DeepSeek API: openai库, base_url=https://api.deepseek.com/v1, 需 DEEPSEEK_API_KEY。代码在 llm_client.py。用户说"删"=零确认执行，但先检查内容。
+unified_range 优化：去掉 TTL+warmup+统计回退(2.80%*vol)。DeepSeek API: openai库, base_url=api.deepseek.com/v1。Greeks bug: Tradier 返回真实 Greeks 但 core.py 用硬编码 σ=0.18 重算 BS，且 gamma_analytics.py 未调用。Hermes deploy 已推 hermes-full。
