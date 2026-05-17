@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+
+# Node
+node_modules/
+
+# 大体积模型/数据
+*.safetensors
+*.pkl
+*.pt
+*.pth
+*.h5
+*.onnx
+
+# 运行时数据库/缓存
+*.db
+*.db-wal
+*.db-shm
+.cache/
+cache/
+image_cache/
+sandboxes/
+predictions/
+data/
+
+# 密钥
+*.pem
+.env
+.git-credentials
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 旧备份
+references/src.bak.*/
+config.yaml

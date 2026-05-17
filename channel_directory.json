@@ -1,0 +1,189 @@
+{
+  "updated_at": "2026-05-18T01:14:46.277666",
+  "platforms": {
+    "telegram": [
+      {
+        "id": "5947296921",
+        "name": "海诺",
+        "type": "dm",
+        "thread_id": null
+      },
+      {
+        "id": "-5290880008",
+        "name": "Agents",
+        "type": "group",
+        "thread_id": null
+      },
+      {
+        "id": "-1003936046082",
+        "name": "Agents委员会🚀",
+        "type": "group",
+        "thread_id": null
+      },
+      {
+        "id": "-1003936046082:34",
+        "name": "Agents / topic 34",
+        "type": "group",
+        "thread_id": "34"
+      },
+      {
+        "id": "-1003936046082:47",
+        "name": "Agents / topic 47",
+        "type": "group",
+        "thread_id": "47"
+      },
+      {
+        "id": "-1003936046082:65",
+        "name": "Agents / topic 65",
+        "type": "group",
+        "thread_id": "65"
+      },
+      {
+        "id": "-1003936046082:69",
+        "name": "Agents / topic 69",
+        "type": "group",
+        "thread_id": "69"
+      },
+      {
+        "id": "-1003936046082:96",
+        "name": "Agents / topic 96",
+        "type": "group",
+        "thread_id": "96"
+      },
+      {
+        "id": "-1003936046082:106",
+        "name": "Agents / topic 106",
+        "type": "group",
+        "thread_id": "106"
+      },
+      {
+        "id": "-1003936046082:120",
+        "name": "Agents / topic 120",
+        "type": "group",
+        "thread_id": "120"
+      },
+      {
+        "id": "-1003936046082:189",
+        "name": "Agents委员会🚀 / topic 189",
+        "type": "group",
+        "thread_id": "189"
+      },
+      {
+        "id": "-1003936046082:348",
+        "name": "Agents委员会🚀 / topic 348",
+        "type": "group",
+        "thread_id": "348"
+      },
+      {
+        "id": "-1003936046082:425",
+        "name": "Agents委员会🚀 / topic 425",
+        "type": "group",
+        "thread_id": "425"
+      },
+      {
+        "id": "-1003936046082:455",
+        "name": "Agents委员会🚀 / topic 455",
+        "type": "group",
+        "thread_id": "455"
+      },
+      {
+        "id": "-1003936046082:466",
+        "name": "Agents委员会🚀 / topic 466",
+        "type": "group",
+        "thread_id": "466"
+      },
+      {
+        "id": "-1003936046082:478",
+        "name": "Agents委员会🚀 / topic 478",
+        "type": "group",
+        "thread_id": "478"
+      },
+      {
+        "id": "-1003936046082:628",
+        "name": "Agents委员会🚀 / topic 628",
+        "type": "group",
+        "thread_id": "628"
+      },
+      {
+        "id": "-1003936046082:633",
+        "name": "Agents委员会🚀 / topic 633",
+        "type": "group",
+        "thread_id": "633"
+      },
+      {
+        "id": "-1003840081070",
+        "name": "Agents 小组",
+        "type": "group",
+        "thread_id": null
+      },
+      {
+        "id": "-1003840081070:32",
+        "name": "Agents 小组 / topic 32",
+        "type": "group",
+        "thread_id": "32"
+      },
+      {
+        "id": "-1003840081070:65",
+        "name": "Agents 小组 / topic 65",
+        "type": "group",
+        "thread_id": "65"
+      },
+      {
+        "id": "-1003840081070:175",
+        "name": "Agents 小组 / topic 175",
+        "type": "group",
+        "thread_id": "175"
+      },
+      {
+        "id": "-1003840081070:234",
+        "name": "Agents 小组 / topic 234",
+        "type": "group",
+        "thread_id": "234"
+      },
+      {
+        "id": "-1003840081070:236",
+        "name": "Agents 小组 / topic 236",
+        "type": "group",
+        "thread_id": "236"
+      },
+      {
+        "id": "-1003840081070:253",
+        "name": "Agents 小组 / topic 253",
+        "type": "group",
+        "thread_id": "253"
+      },
+      {
+        "id": "-1003840081070:262",
+        "name": "Agents 小组 / topic 262",
+        "type": "group",
+        "thread_id": "262"
+      }
+    ],
+    "discord": [],
+    "whatsapp": [],
+    "slack": [],
+    "signal": [],
+    "mattermost": [],
+    "matrix": [],
+    "homeassistant": [],
+    "email": [],
+    "sms": [],
+    "dingtalk": [],
+    "feishu": [],
+    "wecom": [
+      {
+        "id": "JinYiWei",
+        "name": "JinYiWei",
+        "type": "dm",
+        "thread_id": null
+      }
+    ],
+    "wecom_callback": [],
+    "weixin": [],
+    "bluebubbles": [],
+    "qqbot": [],
+    "yuanbao": [],
+    "irc": [],
+    "teams": []
+  }
+}

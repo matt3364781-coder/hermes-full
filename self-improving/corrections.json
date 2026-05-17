@@ -1,0 +1,61 @@
+{
+  "corrections": [
+    {
+      "timestamp": "2026-05-16T10:46:00Z",
+      "type": "clarification",
+      "trigger": "用户纠正移植路径",
+      "original": "源码统一在 /opt/",
+      "corrected": "全部移植到 ~/.hermes/skills/onebot-3.0/",
+      "lesson": "用户明确指定路径时，严格执行，不假设默认位置"
+    },
+    {
+      "timestamp": "2026-05-16T10:50:00Z",
+      "type": "permission",
+      "trigger": "用户纠正 '能不能' 语义",
+      "original": "用户问 '能不能做成模型' → 直接执行",
+      "corrected": "'能不能' ≠ 执行许可，等 '去做' 才动手",
+      "lesson": "用户问可行性时只回答可行性+方案，等明确指令再开工"
+    },
+    {
+      "timestamp": "2026-05-16T11:00:00Z",
+      "type": "output_style",
+      "trigger": "用户要求极简输出",
+      "original": "详细解释 + 状态列表",
+      "corrected": "结论→分数→评论→可执行",
+      "lesson": "用户信号 '别墨迹' = 立即停止解释，直接给结果"
+    },
+    {
+      "timestamp": "2026-05-16T11:15:00Z",
+      "type": "verification",
+      "trigger": "用户测试 '有没有吹牛逼'",
+      "original": "声称模块正常",
+      "corrected": "实际运行验证后报告",
+      "lesson": "任何声称必须附实际输出证据"
+    },
+    {
+      "timestamp": "2026-05-16T11:30:00Z",
+      "type": "scope",
+      "trigger": "用户要求清理 skills",
+      "original": "建议合并方案",
+      "corrected": "直接执行合并",
+      "lesson": "用户说 '执行合并' = 不需要再确认清单"
+    }
+  ],
+  "patterns_detected": {
+    "stop_on_stop": {
+      "count": 3,
+      "triggers": ["停止停止", "别墨迹了", "听明白了吗"],
+      "action": "立即停止当前行为，零解释"
+    },
+    "verify_before_claim": {
+      "count": 4,
+      "triggers": ["有没有吹牛逼", "测试一下", "验证"],
+      "action": "先运行验证，再报告结果"
+    },
+    "wait_for_permission": {
+      "count": 2,
+      "triggers": ["能不能", "可不可以"],
+      "action": "只回答可行性，不执行"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "last_session": "2026-05-16T02:00:00-05:00",
+  "active_mode": true,
+  "outcomes": {
+    "gbrain_integration": {
+      "status": "partial",
+      "trigger_rule": "跨模块关联查询自动调用，日常不用"
+    },
+    "wiki_deleted": {
+      "status": "deleted",
+      "reason": "用户无法访问，无用"
+    },
+    "indicator_model_clarified": {
+      "status": "completed",
+      "finding": "foundation.py 731行，TA-Lib单库驱动8指标+4衍生研判"
+    },
+    "five_core_models_verified": {
+      "status": "verified_2026_05_14",
+      "models": ["Kronos", "XGBoost", "GARCH", "HMM", "Monte Carlo"],
+      "evidence": "raw output provided"
+    },
+    "scenario_model_added": {
+      "status": "completed_2026_05_15",
+      "finding": "L5 scenario_model.py integrated into core.py predict() pipeline"
+    },
+    "minervini_sepa_deployed": {
+      "status": "completed_2026_05_15",
+      "finding": "L6 Minervini SEPA + PreciousMetalsEngine deployed, 2 git commits"
+    }
+  },
+  "user_corrections_today": [
+    "wiki没用→删了",
+    "self-improving要主动→设active_mode",
+    "XGBoost是原始架构内的→纠正认知",
+    "Hermes是Lighthouse预制模板→纠正认知",
+    "新Agents群-1003840081070→纠正认知",
+    "群Privacy Mode关闭后要踢了重拉→发现的"
+  ],
+  "patterns": {
+    "scaffold_not_done": "用户会测试 '有没有吹牛逼'，初始化≠可用",
+    "show_raw_output": "每次声称必须附原始输出证据",
+    "stop_on_stop": "用户说停止立即停",
+    "prediction_accuracy_check": "SPY 74次预测中71.6%当前价在区间内，中心误差平均6.27%，区间宽度平均2.73%",
+    "kronos_volatility": "Kronos confidence 在0.30-0.85之间大幅波动，同一价格点多次运行结果不稳定",
+    "xgboost_consistent_down": "XGBoost连续输出down方向，confidence 0.44-0.47，与technical层bullish信号冲突"
+  },
+  "prediction_stats_2026_05_15": {
+    "symbol": "SPY",
+    "total_predictions": 74,
+    "in_range_current_price_743.27": "53/74 = 71.6%",
+    "avg_range_width_pct": "2.73%",
+    "avg_center_error_pct": "6.27%",
+    "last_prediction_time": "2026-05-15T17:36:52Z",
+    "last_price": 741.17,
+    "last_range": [736.42, 751.84]
+  }
+}
