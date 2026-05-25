@@ -28,6 +28,39 @@ cache/
 image_cache/
 sandboxes/
 predictions/
+
+# 运行时 artifact
+logs/
+sessions/
+session_handoffs/
+lsp/
+pairing/
+cron/jobs.json
+gateway.*
+*.lock
+*.pid
+
+# 凭据
+auth.json
+auth.lock
+config.yaml.bak*
+config.yaml.rej
+
+# 数据文件
+*.csv
+*.npz
+*.parquet
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Agent 运行时
+hermes-agent/
+hermes-agent-self-evolution/
+providers/
+
+# 技能归档
+skills/.archive/
 data/
 
 # 密钥

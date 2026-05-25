@@ -1,0 +1,33 @@
+name: onebot3
+version: 3.0.0
+description: ONE Bot 3.0 — L1 Data + Indicators + GEX | L2 Kronos | L3 Distiller
+author: ONE Bot Infrastructure
+enabled: true
+config:
+  tickers:
+    primary: SPY
+    secondary:
+      - VIX
+      - QQQ
+      - IWM
+  market_hours:
+    timezone: America/Chicago
+    open: "08:30"
+    close: "15:00"
+    days: [1, 2, 3, 4, 5]
+  pulse_interval_sec: 300
+  db_path: "data/market.db"
+  data_sources:
+    tradier:
+      base_url: https://api.tradier.com/v1
+      token: o6fWRfSJw3tAlZXPxgS4wRW7hcX8
+    yfinance:
+      enabled: true
+    finnhub:
+      token: d6tdsu1r01qhkb43pl9gd6tdsu1r01qhkb43pla0
+      base_url: https://finnhub.io/api/v1
+  retention:
+    raw_hours: 4
+    daily_days: 10
+    weekly_weeks: 8
+    monthly_permanent: true

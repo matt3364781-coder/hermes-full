@@ -1,0 +1,6 @@
+name: archive
+description: "SQLite + FTS5 local memory archive with automatic conversation archiving, semantic search, and weekly distillation."
+version: "1.0.0"
+author: "Hermes"
+requires: []
+config_schema: []

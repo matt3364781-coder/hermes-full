@@ -1,8 +1,8 @@
 {
-  "last_report_path": "/home/ubuntu/.hermes/logs/curator/20260511-164013",
-  "last_run_at": "2026-05-12T00:40:00.000000+00:00",
-  "last_run_duration_seconds": 553.410165,
-  "last_run_summary": "auto: no changes; llm: ## Curator Consolidation Pass Complete\n\n### Scan Results\n\nI performed a comprehensive scan of the entire skill library:\n\n- **Bundled skills in manifest**: 87\n- **Skills on disk**: 88\n- **Agent-created skills**: **1** (`onebot-3.0`)\n\n### Clu…",
+  "last_report_path": "/home/ubuntu/.hermes/logs/curator/20260519-005036",
+  "last_run_at": "2026-05-19T00:50:36.096650+00:00",
+  "last_run_duration_seconds": 1007.747597,
+  "last_run_summary": "auto: no changes; llm: ## Umbrella-Building Consolidation Pass — Complete\n\n### Clusters Processed\n\n**1. `hermes-*` cluster** (5 members: `hermes-agent`, `hermes-self-evolution`, `hermes-execution-guardrails`, `hermes-atlas-navigator`, `hermes-kimi-division`)\n\n- `…",
   "paused": false,
-  "run_count": 2
+  "run_count": 3
 }

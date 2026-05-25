@@ -335,6 +335,52 @@ If you catch yourself thinking:
 | "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |
 | "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
 | "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question the pattern, don't fix again. |
+| **"系统跑通了，基线是XX秒" — without verifying data source** | Claiming performance baselines without verifying the data is real (not simulated) will get called out. Verify source before reporting numbers. |
+
+## Data Source Authenticity & System State Rule
+
+When reporting system state, performance baselines, "it works" claims, or **any factual assertion about what exists on the filesystem**:
+
+**MUST verify before claiming:**
+1. Is the data coming from a real API or simulated/synthetic?
+2. Check timestamps — are they recent (not stale cached)?
+3. Check values — do they match live market data (not hardcoded defaults)?
+4. For **filesystem claims** (files exist, directories present, models cached) → use `ls`/`find`/`stat` in terminal or `search_files` to **verify on disk**. Never rely on memory or context summaries for file state.
+5. If uncertain → say "我没确认" and verify first
+
+**This applies especially when:**
+- Reporting pipeline timing baselines
+- Claiming a fix resolved a data issue
+- Presenting real-time data as evidence of system health
+- **Crossing context windows** (context compression/summarization)
+
+### ⚠️ CRITICAL: Context Summary Skepticism
+
+Context summaries (auto-generated session handoffs) are **LLM-generated** and CAN hallucinate file system, model, and cache state. **Treat them as navigation aids, not authoritative sources.**
+
+**FAILURE PATTERN (documented from real sessions):**
+- Context summary claims "HuggingFace cache also purged" → ❌ FALSE. HF cache was intact with 391MB model.
+- Assistant accepted the claim without `find` verification → repeated the falsehood to user → user frustrated.
+
+**Required procedure on cross-window handoff:**
+1. Context summary says something exists or doesn't exist on disk → **verify with `ls`/`find`/`stat`**
+2. Context summary claims a file was deleted/created → **check the actual path**
+3. Context summary describes current architecture → **walk the directory tree to confirm**
+4. If uncertain about a claim from context summary → **say "让我查一下盘上实际情况"** — never pass it through unexamined
+
+**Never:** repeat a filesystem claim from compressed context without disk verification, especially when:
+- The user has corrected you before about file state claims
+- The claim involves "deleted", "purged", "removed" or other definitive state assertions
+- You're in a new context window and the only source is the summary
+
+### Additional Caution With Cross-Window Claims
+
+**When crossing context windows** (new session after compression): the summary may describe past work incorrectly. Specifically watch for:
+- **Claiming something "doesn't exist"** when it's still on disk (most dangerous — leads to redundant work)
+- **Claiming something "works" or "is fixed"** when it wasn't verified
+- **Attributing actions to the wrong session** or sequence
+
+When in doubt: `find`, `ls`, `stat`. This takes 2 seconds and prevents a 5-minute argument.
 
 ## Quick Reference
 
