@@ -5,10 +5,11 @@ scheduler.py — ONE Bot 3.0 统一调度器
 职责：
   • 线程A: 脉冲循环（每5分钟，L1数据采集+计算+存储）
   • 线程B: 备份循环（每60分钟，archive.db 增量导出到 data/memory_backups/）
+  • 线程C: 日蒸馏循环（每工作日20:00 CDT，生成盘后摘要供 Hermes 读取）
 
 启动方式：
   from scheduler import start_all, stop_all
-  start_all()  → 启动两个 daemon 线程
+  start_all()  → 启动 daemon 线程
 
 不依赖 cron，不依赖 gateway 插件系统。
 """
@@ -21,7 +22,7 @@ import gzip
 import sqlite3
 import logging
 import threading
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 logger = logging.getLogger("onebot3.scheduler")
@@ -31,6 +32,7 @@ PLUGIN_DIR = Path(__file__).parent.resolve()
 DATA_DIR = PLUGIN_DIR / "data"
 MARKET_DB = DATA_DIR / "market.db"
 MEMORY_BACKUPS = DATA_DIR / "memory_backups"
+DAILY_REPORTS = DATA_DIR / "daily_reports"
 ARCHIVE_DB = Path.home() / ".hermes" / "memory" / "archive.db"
 CHECKPOINT = MEMORY_BACKUPS / "checkpoint.json"
 
@@ -183,6 +185,77 @@ def _do_full_snapshot(state: dict):
     logger.info("[BACKUP] Full snapshot: %s (%.2f MB)", fname, fsize)
 
 
+def _start_daily_distill_loop():
+    """线程C: 每工作日20:00 CDT跑日蒸馏 → 直接推Telegram"""
+    logger.info("[SCHEDULER] Daily distill loop started (weekdays 20:00 CDT)")
+
+    # 从 .env 读 bot token
+    env_path = Path.home() / ".hermes" / ".env"
+    bot_token = None
+    if env_path.exists():
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("TELEGRAM_BOT_TOKEN="):
+                    bot_token = line.split("=", 1)[1]
+                    break
+
+    if not bot_token:
+        logger.error("[DISTILL] TELEGRAM_BOT_TOKEN not found, thread disabled")
+        return
+
+    _last_run_date = ""
+
+    while not _stop.is_set():
+        try:
+            now = datetime.now()
+            date_str = now.strftime("%Y-%m-%d")
+
+            # 工作日 + 20:00 整點 + 當天還沒跑過
+            if (now.weekday() < 5 and now.hour == 20 and now.minute == 0
+                    and date_str != _last_run_date):
+                _do_daily_distill(bot_token, date_str)
+                _last_run_date = date_str
+                _stop.wait(120)  # 等過1分鐘，避免重複觸發
+            else:
+                _stop.wait(30)  # 每30秒檢查一次
+        except Exception as e:
+            logger.error("[DISTILL] Error: %s", e, exc_info=True)
+            _stop.wait(60)
+
+
+def _do_daily_distill(bot_token: str, date_str: str):
+    """执行日蒸馏 → 存檔 + Telegram推送"""
+    import urllib.request
+    import urllib.parse
+
+    logger.info("[DISTILL] Running daily distill for %s...", date_str)
+
+    sys.path.insert(0, str(PLUGIN_DIR))
+    from distiller.engine import format_daily_block
+
+    report = format_daily_block(date_str)
+
+    # 存檔
+    DAILY_REPORTS.mkdir(parents=True, exist_ok=True)
+    report_path = DAILY_REPORTS / f"{date_str}.txt"
+    report_path.write_text(report)
+    logger.info("[DISTILL] Report saved: %s (%d chars)", report_path, len(report))
+
+    # Telegram 推送
+    chat_id = "5947296921"
+    payload = urllib.parse.urlencode({
+        "chat_id": chat_id,
+        "text": report,
+        "parse_mode": "HTML",
+    }).encode()
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    req = urllib.request.Request(url, data=payload, method="POST")
+    resp = urllib.request.urlopen(req, timeout=15)
+    logger.info("[DISTILL] Telegram push OK: %s", resp.read().decode()[:120])
+
+
+
 def start_all():
     """启动所有定时线程"""
     global _threads
@@ -194,14 +267,17 @@ def start_all():
 
     t1 = threading.Thread(target=_start_pulse_loop, daemon=True, name="onebot-pulse")
     t2 = threading.Thread(target=_start_backup_loop, daemon=True, name="onebot-backup")
+    t3 = threading.Thread(target=_start_daily_distill_loop, daemon=True, name="onebot-distill")
     t1.start()
     t2.start()
-    _threads = [t1, t2]
-    logger.info("[SCHEDULER] Started: pulse=5min, backup=60min")
+    t3.start()
+    _threads = [t1, t2, t3]
+    logger.info("[SCHEDULER] Started: pulse=5min, backup=60min, distill=weekday 20:00")
 
 
 def stop_all():
     """停止所有定时线程"""
+    global _threads
     if not _threads:
         return
     _stop.set()

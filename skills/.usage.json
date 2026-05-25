@@ -100,13 +100,13 @@
     "created_at": "2026-05-24T14:56:36.419966+00:00",
     "created_by": null,
     "last_patched_at": "2026-05-24T19:17:44.026641+00:00",
-    "last_used_at": "2026-05-24T19:17:25.266033+00:00",
-    "last_viewed_at": "2026-05-24T19:17:25.262833+00:00",
+    "last_used_at": "2026-05-25T04:03:06.710769+00:00",
+    "last_viewed_at": "2026-05-25T04:03:06.636319+00:00",
     "patch_count": 4,
     "pinned": false,
     "state": "active",
-    "use_count": 7,
-    "view_count": 7
+    "use_count": 8,
+    "view_count": 8
   },
   "hermes-atlas-navigator": {
     "archived_at": null,
@@ -172,14 +172,14 @@
     "archived_at": null,
     "created_at": "2026-05-25T03:55:41.095601+00:00",
     "created_by": null,
-    "last_patched_at": "2026-05-25T03:59:36.391321+00:00",
-    "last_used_at": "2026-05-25T03:59:39.753860+00:00",
-    "last_viewed_at": "2026-05-25T03:59:39.750092+00:00",
-    "patch_count": 3,
+    "last_patched_at": "2026-05-25T04:02:44.819273+00:00",
+    "last_used_at": "2026-05-25T04:02:29.123580+00:00",
+    "last_viewed_at": "2026-05-25T04:02:29.120378+00:00",
+    "patch_count": 4,
     "pinned": false,
     "state": "active",
-    "use_count": 3,
-    "view_count": 3
+    "use_count": 5,
+    "view_count": 5
   },
   "mcp-builder": {
     "archived_at": null,
@@ -329,14 +329,14 @@
     "archived_at": null,
     "created_at": "2026-05-24T06:42:25.169802+00:00",
     "created_by": null,
-    "last_patched_at": "2026-05-25T03:30:04.241292+00:00",
-    "last_used_at": "2026-05-25T03:58:59.375184+00:00",
-    "last_viewed_at": "2026-05-25T03:58:59.372106+00:00",
-    "patch_count": 132,
+    "last_patched_at": "2026-05-25T04:19:59.208797+00:00",
+    "last_used_at": "2026-05-25T04:19:18.894898+00:00",
+    "last_viewed_at": "2026-05-25T04:19:18.890860+00:00",
+    "patch_count": 134,
     "pinned": false,
     "state": "active",
-    "use_count": 77,
-    "view_count": 77
+    "use_count": 79,
+    "view_count": 79
   },
   "receiving-code-review": {
     "archived_at": null,

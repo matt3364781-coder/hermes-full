@@ -57,7 +57,7 @@ L1 (anchoring) → 全量数据采集
 **原则：**
 - 数据采集（脉冲/备份）→ daemon 线程，不耗 token，不依赖 cron
 - 报告/摘要 → 手动触发，不设自动推送（用户不看推送）
-- 调度器在 `__init__.py` 底部通过 daemon thread 自启（`threading.Thread(target=lambda: __import__('lib.scheduler').start_all(), daemon=True).start()`）
+- 调度器在 `__init__.py` 底部通过 daemon thread 自启（`threading.Thread(target=lambda: __import__('onebot3.lib.scheduler', fromlist=['start_all']).start_all(), daemon=True).start()`）— 用完整 dot path 代替 sys.path hack，避免工作目錄不在插件目錄時導入失敗
 
 ## 关键发现
 

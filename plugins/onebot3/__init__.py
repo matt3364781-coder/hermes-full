@@ -329,5 +329,10 @@ def get_distiller_block(date: str | None = None) -> str:
     from distiller.engine import format_daily_block
     return format_daily_block(date)
 
-# ── 调度器自启动（模块加载时自动拉起，不阻塞 import） ──
-threading.Thread(target=lambda: __import__('lib.scheduler').start_all(), daemon=True, name="onebot-autostart").start()
+# ── 调度器自启动 ──
+threading.Thread(
+    target=lambda: __import__('onebot3.lib.scheduler', fromlist=['start_all']).start_all(),
+    daemon=True,
+    name="onebot-autostart",
+).start()
+logger.info(f"[ONE Bot 3.0] Scheduler auto-start triggered")

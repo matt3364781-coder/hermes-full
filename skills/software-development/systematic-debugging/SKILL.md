@@ -382,6 +382,101 @@ Context summaries (auto-generated session handoffs) are **LLM-generated** and CA
 
 When in doubt: `find`, `ls`, `stat`. This takes 2 seconds and prevents a 5-minute argument.
 
+## Phase 5 (Extension): Verifying Running Services / Daemon Threads
+
+**Use when the question is "is X actually doing its thing inside the live process?" — NOT "does the code work?"**
+
+### The Isolation Test Trap (⚠️ CORRECTION-DRIVEN)
+
+**Don't test in a separate python3 process and infer the gateway process is fine.** The code may work in isolation but:
+- The daemon thread may not have started (import failed silently)
+- The thread may have crashed on first run (exception killed daemon thread, no trace)
+- Logger config may differ between isolated test and gateway
+- Plugin loading order may affect availability of dependencies
+
+**Correct procedure — verify via the ACTUAL gateway process:**
+
+### Step 1: Check Process Thread Count
+
+```bash
+# Gateway PID
+ps aux | grep "hermes.*gateway" | grep -v grep
+# Threads
+ps -T -p <PID> -o lwp,comm | wc -l
+# Expected: 8-12 threads (main + cron + memory_monitor + platform threads + daemon threads)
+```
+
+### Step 2: Find Hard Evidence in Side Effects
+
+Daemon threads that write to files — check the **output artifacts**:
+
+```bash
+# DB modification time (does it match pulse interval?)
+ls -la data/market.db
+# Check latest row timestamp vs gateway start time
+python3 -c "
+import sqlite3, os
+conn = sqlite3.connect('data/market.db')
+ts = conn.execute('SELECT MAX(timestamp) FROM raw_snapshots').fetchone()[0]
+print(f'Latest snapshot: {ts}')
+" 
+```
+
+**Key insight:** If the DB was last modified after gateway startup with recent data → daemon IS running. This is MORE reliable than log output (loggers can be misconfigured).
+
+### Step 3: Look Beyond Log Output
+
+**Log output absence ≠ daemon is dead.** Possible reasons:
+- Logger not configured at the specific sub-logger level (e.g., `onebot3.scheduler` not propagated to root logger handler)
+- Log level filtering (INFO filtered out by handler config)
+- Exception caught silently at wrong logger level
+
+**Always cross-check with side effects** (DB writes, file timestamps, /proc counters) before claiming a daemon is down.
+
+### Step 4: Correlate with Gateway Restart Time
+
+```bash
+# When did gateway start?
+stat -c '%y' /proc/<PID> 2>/dev/null
+# OR from logs:
+grep "Starting Hermes Gateway" ~/.hermes/logs/gateway.log | tail -1
+
+# Compare with artifact timestamps
+# - DB last modification
+# - Latest snapshot timestamp
+# - Did data write AFTER restart? → thread alive
+# - Data only from BEFORE restart? → thread never ran in this session
+```
+
+### Step 5: Verify Data Content Freshness
+
+Don't just check timestamps — verify the actual data values:
+
+```python
+# Check that the latest snapshot has real market data, not stale defaults
+snap = db.execute("SELECT underlying_price, gex FROM raw_snapshots ORDER BY rowid DESC LIMIT 1").fetchone()
+# Price should match live market, GEX should be non-zero
+```
+
+### Common Pitfalls
+
+| Assumption | Reality | Evidence |
+|------------|---------|----------|
+| "Log shows no [PULSE] → daemon dead" | Logger may not be wired to handler | DB has fresh data ✅ |
+| "Test in python3 -c 'from scheduler import start_all' works → gateway is fine" | daemon thread in separate process, not gateway | Thread not in /proc/<gateway_PID>/task |
+| "market.db exists → data fresh" | DB could be from PREVIOUS gateway session | Compare DB mtime to gateway start time |
+| "Gateway has 9 threads → daemons accounted for" | Could be platform/cron threads, not pulse | Need to verify via data content |
+
+### When User Says "别撒谎，你检查彻底了吗"
+
+**STOP. Do not defend. Do not re-assert.** The user is saying your evidence chain is incomplete.
+
+**Immediate action:**
+1. Acknowledge the gap: "你說得對，我來徹底查"
+2. Go back to Step 1-5 above — produce hard evidence
+3. Only conclude after verifying via process artifacts (DB, threads, file timestamps)
+4. If wrong, admit it clearly with the correct evidence
+
 ## Quick Reference
 
 | Phase | Key Activities | Success Criteria |

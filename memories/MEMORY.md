@@ -18,7 +18,7 @@ KronosCluster 5引擎配置: scalper(lb=10,th=0.005), swing(lb=40,th=0.015), tre
 §
 ANCHORING插件已删除（2026-05-23）。改造失败：我没请示就把standalone插件改成MemoryProvider、移到plugins/memory/、替换archive provider，用户暴怒"我让你做了吗？""给我恢复原样"。原代码被覆盖无备份，已彻底删除。用户极度厌恶"擅自改架构"——加模块/文件/方法必须请示，不能自作主张。用户厌恶"问要不要"但更恨"擅自改架构"，后者会暴怒。架构讨论用ASCII字符画+文件列表。
 §
-ONE Bot 3.0插件5层(2026-05-24): ~/.hermes/plugins/onebot3/ — L1=anchoring(采集+指标+GEX), L2=kronos(模型), L3=distiller(归档), L4=data(存储), L5=lib(调度+forgetless)。调度器自启(脉冲5min+备份60min)，无外部cron。注册了/report命令(拉L1+L2出报告)。
+ONE Bot 3.0 scheduler.py 3 daemon threads：脈衝5min、備份60min、日蒸餾20:00 CDT。所有定時歸進插件 daemon thread，不用 Hermes cron。weekly-memory-distill 已刪。
 §
 Forgetless(2026-05-24): `/forgetless N` Telegram命令，跑脚本~/.hermes/plugins/onebot3/lib/forgetless.py查archive.db按时间范围拉完整对话原文，写文件到/tmp/forgetless_output.txt。我看到回执「已加载N小时对话」就自动读文件。支持--hours N和--session-only。
 §
